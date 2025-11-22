@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!--- Supabase likes --->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./output.css" rel="stylesheet">
+
+    <!--- Nome e favicoin --->
+    <link rel="icon" href="img/favicon.png" type="image/x-icon">
+    <title>Café Bonjour</title>
+</head>
+
+
+
+<body>
+    <header class="bg-[#273fb6] ">
+        <!--- Logo --->
+        <div class="flex  items-center justify-between px-20  py-10 ">
+            <div class="w-40 pointer-events-none">
+                <img src="img/header/sofá.png" alt="sofa">
+            </div>
+            <!--- Menu --->
+            <div>
+                <nav>
+                    <ul class="flex  space-x-10 font-roboto font-bold text-white text-1">
+                        <a class="transition-all duration-300 ease-[cubic-bezier(.23,1,0.32,1)] hover:opacity-50"
+                            href="#inicio">INICIO</a>
+                        <a class="transition-all duration-300 ease-[cubic-bezier(.23,1,0.32,1)] hover:opacity-50"
+                            href="#historia">NOSSA HISTORIA</a>
+                        <a class="hover:opacity-50" href="#localizacao">LOCALIZAÇÃO</a>
+                        <a class="transition-all duration-300 ease-[cubic-bezier(.23,1,0.32,1)] hover:opacity-50"
+                            href="cardapio.html">CARDAPIO</a>
+                    </ul>
+                </nav>
+            </div>
+            
+            <!--- Numero de likes --->
+            <div class="text-white font-poppins font-sans ">
+                <p id="likeCount" class="absolute top-[29px] left-[1207px]"></p>
+            </div>
+
+            <div>
+                <!--- Info --->
+                <button type="submit"
+                    class="cursor-pointer transition-all duration-300 ease-[cubic-bezier(.23,1,0.32,1)] hover:opacity-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
+                        stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-book-text-icon lucide-book-text">
+                        <path
+                            d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20" />
+                        <path d="M8 11h8" />
+                        <path d="M8 7h6" />
+                    </svg>
+                </button>
+
+                
+                <!--- Botão like --->
+                <button id="likeBtn" class="group p-2 cursor-pointer">
+                    <svg class="w-8 h-8 transition-all duration-300
+               fill-transparent stroke-white
+               stroke-2 stroke-linecap-round stroke-linejoin-round
+               group-[.active]:fill-white" viewBox="0 0 24 24">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
+                 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09 
+                 C13.09 3.81 14.76 3 16.5 3 
+                 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    </svg>
+                </button>
+                
+
+                <!--- Instagram --->
+                <a target="_blank" href="https://www.instagram.com/cafebonjourbh/"><button type="submit"
+                        class="cursor-pointer transition-all duration-300 ease-[cubic-bezier(.23,1,0.32,1)] hover:opacity-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
+                            stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-instagram-icon lucide-instagram">
+                            <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                        </svg>
+                    </button></a>
+            </div>
+
+            
+        </div>
+    </header>
+
+    <main>
+        <!--- INICIO --->
+        <div id="inicio">
+            <div class="bg-[#273fb6] h-157 flex">
+                <div class=" text-white flex pl-20">
+                    <h1 class=" font-roboto font-bold text-9xl tracking-tight ">
+                        ASSANDO <br> FELICIDADE <br><span class="text-3xl font-opensans">sem fim</span> PARA CADA
+                        <br>CORAÇÃO<span class="text-3xl font-opensans">saborear a alegria !</span>
+                    </h1>
+                </div>
+                <!--- Elementos --->
+                <div >
+                    <img class="pointer-events-none" src="img/body/bolo.png" alt="bolo">
+                </div>
+                <div class="absolute top-[350px] left-[1050px] pointer-events-none">
+                    <img class="" src="img/body/cappuccino.png" alt="cappuccino">
+                </div>
+            </div>
+        </div>
+
+        <!--- DIVISÃO --->
+        <div>
+            <img src="img/header/divisão.jpg" alt="">
+        </div>
+
+        <!--- MINHA HISTORIA --->
+        <div id="historia" class="bg-white h-200 relative text-[#273fb6]">
+            <div class="font-roboto font-bold text-9xl  tracking-tight">
+                <h1 class="absolute top-[270px] -left-40  rotate-90">
+                    HISTORIA
+                </h1>
+                <h1 class="absolute top-[290px] -left-40 translate-x-45 translate-y-2.5 rotate-90">
+                    NOSSA
+                </h1>
+            </div>
+
+            <div>
+                <p class="max-w-[700px] translate-x-60 translate-y-11">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit odit nam omnis perspiciatis rerum
+                    minima! Quidem vel, at dolorem architecto ratione rerum exercitationem corporis ipsam mollitia
+                    itaque reprehenderit debitis ipsum? itaque reprehenderit debitis ipsum itaque reprehenderit
+                </p>
+            </div>
+
+            <div>
+                <p class="max-w-[700px] translate-x-90 translate-y-11">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit odit nam omnis perspiciatis rerum
+                    minima! Quidem vel, at dolorem architecto ratione rerum exercitationem corporis ipsam mollitia
+                </p>
+            </div>
+
+            <div>
+                <p class="max-w-[700px] translate-x-100 translate-y-11">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit odit nam omnis perspiciatis rerum
+                    minima! Quidem vel, at dolorem architecto ratione rerum exercitationem corporis ipsam mollitia
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit odit nam omnis perspiciatis rerum
+                    minima! Quidem vel, at dolorem architecto ratione rerum exercitationem corporis ipsam mollitia
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit odit nam omnis perspiciatis rerum
+                    minima! Quidem vel, at dolorem architecto ratione rerum exercitationem corporis ipsam mollitia
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit odit nam omnis perspiciatis rerum
+                    minima! Quidem vel, at dolorem architecto ratione rerum exercitationem corporis ipsam mollitia
+                </p>
+            </div>
+
+            <img class="absolute top-[50px] -translate-y-40 left-[1046px] w-[300px] pointer-events-none" src="img/body/cafeCaindo.png"
+                alt="cafeCaindo">
+        </div>
+
+        <!--- DIVISÃO --->
+        <div>
+            <img src="img/header/divisão.jpg" alt="">
+        </div>
+
+        <!--- LOCALIZAÇÃO --->
+        <div id="localizacao" class="bg-[#273fb6] h-170">
+            <div class="font-roboto font-bold text-9xl ">
+                <h1 class="absolute top-[1870px] -left-10 rotate-90 text-white">
+                    LOCALI<br>ZAÇÃO
+                </h1>
+
+                <div style="width: 100%" class="flex justify-center ">
+                    <iframe class="w-[700px] h-[500px] ml-[100px] mt-[100px]" width="100%" height="600" frameborder="0"
+                        scrolling="no" marginheight="0" marginwidth="0"
+                        src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=R.%20Curitiba,%201800%20-%20Lourdes,%20Belo%20Horizonte%20-%20MG,%2030170-122+(My%20BusinCaf%C3%A9%20Bonjouress%20Name)&amp;t=&amp;z=18&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"><a
+                            href="https://www.mapsdirections.info/it/calcola-la-popolazione-su-una-mappa/">densità di
+                            popolazione Italia mappa</a></iframe>
+                </div>
+
+
+                <img class="absolute top-[1849px] pointer-events-none" src="img/body/localizacao mao.png" alt="">
+
+                <img class="absolute top-[1700px] left-[800px] rotate-12 w-48 pointer-events-none"
+                    src="img/body/cafe figura.png" alt="">
+            </div>
+        </div>
+    </main>
+
+    <!--- DIVISÃO --->
+    <div>
+        <img src="img/header/divisão.jpg" alt="">
+    </div>
+
+    <footer>
+        <div class="bg-[#273fb6] h-100 px-10 flex justify-around items-center">
+            <div>
+                <img class="w-66 pointer-events-none" src="img/header/logo.png" alt="logoFooter">
+                <p class="text-white font-roboto font-bold">Uma casa um café muito aconchego</p>
+
+            </div>
+
+            <!--- Menu 1--->
+            <div>
+                <nav>
+                    <ul class="  space-x-10 font-roboto font-bold text-white text-1 ">
+                        <li class="text-2xl">
+                            <h3>Links</h3>
+                        </li>
+                        <li>
+                            <a class="transition-all duration-300 ease-[cubic-bezier(.23,1,0.32,1)] hover:opacity-50"
+                                href="#inicio">INICIO</a>
+                        </li>
+                        <li><a class="transition-all duration-300 ease-[cubic-bezier(.23,1,0.32,1)] hover:opacity-50"
+                                href="#historia">NOSSA HISTORIA</a>
+                        </li>
+                        <li>
+                            <a class="transition-all duration-300 ease-[cubic-bezier(.23,1,0.32,1)] hover:opacity-50"
+                                href="#localizacao">LOCALIZAÇÃO</a>
+                        </li>
+                        <li>
+                            <a class="transition-all duration-300 ease-[cubic-bezier(.23,1,0.32,1)] hover:opacity-50"
+                                href="cardapio.html">CARDAPIO</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!--- endereço footer--->
+            <div>
+                <nav>
+                    <ul class="  space-x-10 font-roboto font-bold text-white text-1 mb-10">
+                        <li class="text-2xl">
+                            <h3>Visite-nós</h3>
+                        </li>
+                        <li>
+                            <h3>R. Curitiba, 1800 - Lourdes, <br> Belo Horizonte - MG, 30170-122</h3>
+                        </li>
+
+                </nav>
+            </div>
+
+            <!--- Rede Sociais --->
+            <div class="mb-28 ">
+                <!--- Instagram --->
+                <a target="_blank" href="https://www.instagram.com/cafebonjourbh/"><button type="submit"
+                        class="cursor-pointer transition-all duration-300 ease-[cubic-bezier(.23,1,0.32,1)] hover:opacity-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
+                            stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-instagram-icon lucide-instagram">
+                            <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                        </svg>
+                    </button></a>
+                <!--- Facebook --->
+                <a target="_blank" href="https://www.facebook.com/p/cafebonjourbh-100092669273430/"><button
+                        type="submit"
+                        class="transition-all duration-300 ease-[cubic-bezier(.23,1,0.32,1)] cursor-pointer hover:opacity-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
+                            stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-facebook-icon lucide-facebook">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                        </svg>
+                    </button></a>
+                <!--- Linkedin --->
+                <a target="_blank" href="https://www.linkedin.com/company/caf%C3%A9-bonjour-bh/"><button type="submit"
+                        class="cursor-pointer transition-all duration-300 ease-[cubic-bezier(.23,1,0.32,1)] hover:opacity-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
+                            stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-linkedin-icon lucide-linkedin">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                            <rect width="4" height="12" x="2" y="9" />
+                            <circle cx="4" cy="4" r="2" />
+                        </svg>
+                    </button></a>
+            </div>
+
+
+
+
+        </div>
+
+        <div class="bg-white h-18 py-2">
+            <div class="flex items-center justify-center gap-2 ">
+                <h3>Café Bonjour - © Todos os direitos reservados.</h3>
+            </div>
+
+
+            <div>
+                <span class="flex items-center justify-center gap-2 font-poppins">
+                    Desenvolvimento
+                    <a target="_blank" href="link do meu portfolio ou do meu instagram"><img class="w-24"
+                            src="img/footer/logoDEV.png" alt="logoDEV"></a>
+                </span>
+
+            </div>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+
+</html>
