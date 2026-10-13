@@ -1,54 +1,811 @@
-@import "tailwindcss";
 
-/* Animação do botão */
-@layer utilities {
-  @keyframes pop {
-    0%   { transform: scale(0.2); filter: brightness(2); }
-    40%  { transform: scale(1.4); filter: brightness(1.5); }
-    70%  { transform: scale(0.9); }
-    100% { transform: scale(1); filter: brightness(1); }
-  }
+/* ---------- 1. VARIÁVEIS ---------- */
+:root {
+  --azul: #273fb6;
+  --branco: #fff;
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
 
-  .animate-pop {
-    animation: pop 0.35s ease forwards;
-  }
+  /* Altura da faixa quadriculada (divisao.jpg = 2576x120). Ela escala com a
+     largura da tela, então usamos a mesma proporção para o café acompanhar. */
+  --divisor-h: calc(100vw * 120 / 2576);
+  /* O fio de café começa na linha 46 de 339px da imagem (13,6% da largura).
+     Somamos 4% para ele nascer um pouco acima da faixa, no azul do início. */
+  --cafe-topo: 0.176;
+
+  --m-titulo-fs: clamp(2.25rem, 12vw, 3.5rem);
+
+  --fonte-padrao: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --fonte-roboto: "Roboto", sans-serif;
+  --fonte-opensans: "Open Sans", sans-serif;
+  --fonte-poppins: "Poppins", sans-serif;
+  /* Se o arquivo da fonte não existir, cai na fonte padrão (igual ao site antigo) */
+  --fonte-cabo: "Cabo Rounded", var(--fonte-padrao);
 }
-
-
-
-
-/*FONTS*/
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-
-.font-baloo {
-  font-family: 'Baloo 2', cursive;
-}
-
-.font-lato {
-  font-family: 'Lato', sans-serif;
-}
-
-.font-opensans {
-  font-family: 'Open Sans', sans-serif;
-}
-
-.font-poppins {
-  font-family: 'Poppins', sans-serif;
-}
-
-.font-quicksand {
-  font-family: 'Quicksand', sans-serif;
-}
-
-.font-roboto {
-  font-family: 'Roboto', sans-serif;
-}
-
-
 
 @font-face {
-  font-family: 'Cabo Rounded';
-  src: url('fonts/Cabo-Rounded-Regular.otf') format('truetype');
+  font-family: "Cabo Rounded";
+  src: url("fonts/Cabo-Rounded-Regular.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
+}
+
+/* ---------- 2. RESET (o que o Tailwind fazia por baixo dos panos) ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0 solid;
+}
+
+html {
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  font-family: var(--fonte-padrao);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+img, svg, iframe {
+  display: block;
+  vertical-align: middle;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  background: transparent;
+  border-radius: 0;
+}
+
+/* ---------- 3. CLASSES UTILITÁRIAS (as poucas que se repetem) ---------- */
+.sem-clique { pointer-events: none; }
+
+.fonte-roboto  { font-family: var(--fonte-roboto); }
+.fonte-opensans { font-family: var(--fonte-opensans); }
+.fonte-poppins { font-family: var(--fonte-poppins); }
+.fonte-cabo    { font-family: var(--fonte-cabo); }
+
+/* Troca desktop / mobile (antes: "hidden md:block" e "block md:hidden") */
+.layout-desktop { display: none; }
+.layout-mobile  { display: block; }
+
+@media (min-width: 75rem) {
+  .layout-desktop { display: block; }
+  .layout-mobile  { display: none; }
+}
+
+/* ---------- 4. ÍCONES ---------- */
+.icone {
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: var(--branco);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icone--fino   { stroke-width: 1.75; }
+
+.botao-icone {
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+}
+
+/* ---------- 5. LINKS DO MENU ---------- */
+.link-menu {
+  transition: all 0.3s var(--ease);
+}
+
+@media (hover: hover) {
+  .link-menu:hover,
+  .botao-icone:hover {
+    opacity: 0.5;
+  }
+}
+
+/* ---------- 6. CABEÇALHO ---------- */
+.cabecalho {
+  background: var(--azul);
+}
+
+.cabecalho__conteudo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2.5rem 5rem;
+}
+
+.cabecalho__logo {
+  width: 10rem;
+  pointer-events: none;
+}
+
+/* Item vazio que existia no flex e mantém o espaçamento original do menu */
+.cabecalho__espaco {
+  display: block;
+}
+
+.menu {
+  margin-left: 6rem;
+}
+
+.menu__lista {
+  display: flex;
+  gap: 2.5rem;
+  font-family: var(--fonte-roboto);
+  font-weight: 700;
+  color: var(--branco);
+}
+
+/* ---------- 7. INÍCIO ---------- */
+.inicio {
+  display: flex;
+  height: 39.25rem;
+  background: var(--azul);
+}
+
+.inicio__texto {
+  display: flex;
+  padding-left: 5rem;
+  color: var(--branco);
+}
+
+.inicio__titulo {
+  font-family: var(--fonte-roboto);
+  font-weight: 700;
+  font-size: 8rem;
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
+.inicio__legenda {
+  font-family: var(--fonte-opensans);
+  font-size: 1.875rem;
+  line-height: 1.2;
+}
+
+.inicio__cappuccino {
+  position: absolute;
+  top: 350px;
+  left: 1050px;
+  pointer-events: none;
+}
+
+/* ---------- 8. NOSSA HISTÓRIA ---------- */
+.historia {
+  --cafe-w: clamp(170px, 22vw, 300px);   /* largura do café: acompanha a tela */
+  position: relative;
+  height: 50rem;
+  background: var(--branco);
+  color: var(--azul);
+}
+
+.historia__titulos {
+  font-family: var(--fonte-roboto);
+  font-weight: 700;
+  font-size: 8rem;
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
+.historia__titulo {
+  position: absolute;
+  left: -10rem;
+}
+
+.historia__titulo--historia {
+  top: 270px;
+  transform: rotate(90deg);
+}
+
+.historia__titulo--nossa {
+  top: 290px;
+  transform: translate(11.25rem, 0.625rem) rotate(90deg);
+}
+
+/* O texto nunca passa por baixo do café: a largura máxima desconta o
+   deslocamento do bloco e a largura da imagem. */
+.historia__texto {
+  max-width: 700px;
+}
+
+.historia__texto--1 {
+  max-width: min(700px, calc(100% - 15rem - var(--cafe-w) - 2rem));
+  transform: translate(15rem, 2.75rem);
+}
+.historia__texto--2 {
+  max-width: min(700px, calc(100% - 22.5rem - var(--cafe-w) - 2rem));
+  transform: translate(22.5rem, 2.75rem);
+}
+.historia__texto--3 {
+  max-width: min(700px, calc(100% - 25rem - var(--cafe-w) - 2rem));
+  transform: translate(25rem, 2.75rem);
+}
+
+/* Café caindo: colado na direita e ancorado na faixa quadriculada.
+   - right: 0 -> nunca sai da tela, com qualquer zoom
+   - width em vw -> cresce e diminui junto com a faixa
+   - top -> sobe exatamente a altura da faixa (+ o respiro do fio),
+            então o fio sempre "nasce" do mesmo ponto da divisória */
+.historia__cafe {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  top: calc(-1 * (var(--divisor-h) + var(--cafe-w) * var(--cafe-topo)));
+  width: var(--cafe-w);
+  pointer-events: none;
+}
+
+/* ---------- 9. LOCALIZAÇÃO ----------
+   Atenção: esta seção NÃO é "position: relative" de propósito.
+   Os itens absolutos abaixo usam a página inteira como referência. */
+.localizacao {
+  height: 42.5rem;
+  background: var(--azul);
+}
+
+.localizacao__conteudo {
+  font-family: var(--fonte-roboto);
+  font-weight: 700;
+  font-size: 8rem;
+  line-height: 1;
+}
+
+.localizacao__titulo {
+  position: absolute;
+  top: 1870px;
+  left: -2.5rem;
+  transform: rotate(90deg);
+  color: var(--branco);
+}
+
+.localizacao__mapa {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.localizacao__mapa iframe {
+  width: 700px;
+  height: 500px;
+  margin-left: 100px;
+  margin-top: 100px;
+  border: 0;
+}
+
+.localizacao__mao {
+  position: absolute;
+  top: 1849px;
+  left: 0;
+  pointer-events: none;
+}
+
+.localizacao__xicara {
+  position: absolute;
+  top: 1700px;
+  left: 800px;
+  width: 12rem;
+  transform: rotate(12deg);
+  pointer-events: none;
+}
+
+/* ---------- 10. RODAPÉ ---------- */
+.rodape__topo {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 25rem;
+  padding: 0 2.5rem;
+  background: var(--azul);
+}
+
+.rodape__logo {
+  width: 16.5rem;
+  pointer-events: none;
+}
+
+.rodape__slogan {
+  font-family: var(--fonte-roboto);
+  font-weight: 700;
+  color: var(--branco);
+}
+
+.rodape__slogan--cabo {
+  font-family: var(--fonte-cabo);
+  letter-spacing: 0.1em;
+}
+
+.rodape__lista {
+  font-family: var(--fonte-roboto);
+  font-weight: 700;
+  color: var(--branco);
+}
+
+.rodape__lista--endereco {
+  margin-bottom: 2.5rem;
+}
+
+/* Margem que o "space-x-10" do Tailwind aplicava: alarga a coluna e
+   mantém o espaçamento original entre as colunas do rodapé */
+.rodape__lista > li:not(:last-child) {
+  margin-right: 2.5rem;
+}
+
+.rodape__titulo {
+  font-size: 1.5rem;
+  line-height: 1.3333;
+}
+
+.rodape__redes {
+  margin-bottom: 7rem;
+}
+
+.rodape__base {
+  height: 4.5rem;
+  padding: 0.5rem 0;
+  background: var(--branco);
+}
+
+.rodape__linha {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.rodape__dev {
+  font-family: var(--fonte-poppins);
+}
+
+.rodape__dev img {
+  width: 6rem;
+}
+
+/* ---------- 11. PÁGINA DO CARDÁPIO ---------- */
+.pagina-cardapio {
+  background: var(--azul);
+}
+
+.cardapio__chamada {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5rem;
+  padding: 0 5rem;
+  font-family: var(--fonte-cabo);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--branco);
+}
+
+.cardapio__logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10rem;
+}
+
+.cardapio__logo img {
+  width: 700px;
+  margin-top: 5rem;
+  pointer-events: none;
+}
+
+.cardapio__imagem {
+  pointer-events: none;
+}
+
+/* Botão "Ver cardápio completo" (posição absoluta na página, como antes) */
+.botao-cardapio {
+  position: absolute;
+  top: 2160px;
+  left: 380px;
+  display: inline-block;
+  min-height: 3.75em;
+  margin: 0;
+  padding: 1.5em 2.5em;
+  border: 2.5px solid var(--azul);
+  border-radius: 0.9375em;
+  background: transparent;
+  color: var(--azul);
+  font-family: var(--fonte-cabo);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  user-select: none;
+  touch-action: manipulation;
+  will-change: transform;
+  transition: all 0.3s var(--ease);
+}
+
+.botao-cardapio:focus-visible {
+  outline: 2px solid var(--azul);
+  outline-offset: 3px;
+}
+
+.botao-cardapio:disabled {
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .botao-cardapio:hover {
+    background: var(--azul);
+    color: var(--branco);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    transform: translateY(-0.125rem);
+  }
+}
+
+.botao-cardapio:active {
+  box-shadow: none;
+  transform: translateY(0);
+}
+
+/* ---------- 12. CARTÃO (abre ao clicar no ícone do livro) ---------- */
+.fundo-blur {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  background: rgb(0 0 0 / 0.4);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.fundo-blur--ativo {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cartao {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 9999;
+  width: 500px;
+  max-width: 90vw;
+  height: 300px;
+  perspective: 1200px;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5);
+  transition: all 0.3s;
+}
+
+.cartao--visivel {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.cartao__giro {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+  cursor: pointer;
+}
+
+.cartao__giro--virado {
+  transform: rotateY(180deg);
+}
+
+.cartao__face {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  object-fit: contain;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.cartao__face--frente {
+  transform: translate(-50%, -50%);
+}
+
+.cartao__face--verso {
+  transform: translate(-50%, -50%) rotateY(180deg);
+}
+
+/* =========================================================
+   13. VERSÃO CELULAR (telas menores que 48rem / 768px)
+   O desktop acima não muda; estas classes só aparecem em .layout-mobile
+   ========================================================= */
+.icone--mobile {
+  width: 26px;
+  height: 26px;
+}
+
+/* Cabeçalho fixo no topo, com menu que abre e fecha */
+.m-cabecalho {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--azul);
+}
+
+.m-cabecalho__barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.875rem 1.25rem;
+}
+
+.m-cabecalho__logo {
+  display: block;
+  width: 7rem;
+}
+
+.m-cabecalho__acoes {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.m-cabecalho__acoes > * {
+  display: flex;
+}
+
+.m-menu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s var(--ease);
+}
+
+.m-menu--aberto {
+  max-height: 20rem;
+}
+
+.m-menu__lista {
+  padding: 0 1.25rem 0.75rem;
+  font-family: var(--fonte-roboto);
+  font-weight: 700;
+  color: var(--branco);
+}
+
+.m-menu__lista a {
+  display: block;
+  padding: 0.875rem 0;
+  border-top: 1px solid rgb(255 255 255 / 0.2);
+}
+
+/* Títulos de seção */
+.m-titulo {
+  font-family: var(--fonte-roboto);
+  font-weight: 700;
+  font-size: var(--m-titulo-fs);
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
+/* Início */
+.m-inicio {
+  padding: 2rem 1.25rem 0;
+  overflow: hidden;
+  background: var(--azul);
+  color: var(--branco);
+  scroll-margin-top: 4rem;
+}
+
+.m-inicio__titulo {
+  font-family: var(--fonte-roboto);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 13vw, 3.75rem);
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
+.m-inicio__legenda {
+  display: block;
+  margin: 0.375rem 0;
+  font-family: var(--fonte-opensans);
+  font-size: 1.125rem;
+  line-height: 1.3;
+}
+
+.m-inicio__imagens {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.m-inicio__imagens img {
+  width: 42%;
+  pointer-events: none;
+}
+
+/* Nossa história */
+.m-historia {
+  padding: 2.5rem 1.25rem;
+  background: var(--branco);
+  color: var(--azul);
+  scroll-margin-top: 4rem;
+}
+
+.m-historia__corpo {
+  display: flow-root;   /* contém o café mesmo se o texto for mais curto */
+  margin-top: 1.5rem;
+}
+
+.m-historia__texto p + p {
+  margin-top: 1rem;
+}
+
+/* Mesma ideia do desktop: o café sobe até a faixa quadriculada e fica
+   colado na borda direita. O texto contorna só a parte da imagem que desce
+   para dentro da seção (float). A margem de cima negativa soma:
+   respiro da seção + título (2 linhas) + margem do corpo + faixa + topo do fio. */
+.m-historia {
+  --m-cafe-w: clamp(4.5rem, 26vw, 8rem);
+}
+
+.m-historia__cafe {
+  float: right;
+  position: relative;
+  z-index: 2;
+  width: var(--m-cafe-w);
+  margin:
+    calc(-1 * (2.5rem + 2 * var(--m-titulo-fs) + 1.5rem + var(--divisor-h) + var(--m-cafe-w) * var(--cafe-topo)))
+    -1.25rem 0 1rem;
+  pointer-events: none;
+}
+
+/* Localização */
+.m-localizacao {
+  padding: 2.5rem 1.25rem;
+  background: var(--azul);
+  color: var(--branco);
+  scroll-margin-top: 4rem;
+}
+
+.m-localizacao__topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.m-localizacao__xicara {
+  width: 5rem;
+  transform: rotate(12deg);
+  pointer-events: none;
+}
+
+.m-localizacao__mapa {
+  width: 100%;
+  height: 18rem;
+  margin-top: 1.5rem;
+  border: 0;
+}
+
+.m-localizacao__endereco {
+  margin-top: 1rem;
+  font-family: var(--fonte-roboto);
+  font-weight: 700;
+}
+
+/* Rodapé */
+.m-rodape {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding-top: 2.5rem;
+  background: var(--azul);
+  color: var(--branco);
+  font-family: var(--fonte-roboto);
+  font-weight: 700;
+  text-align: center;
+}
+
+.m-rodape__logo {
+  width: 11rem;
+  margin: 0 auto 0.5rem;
+  pointer-events: none;
+}
+
+.m-rodape__titulo {
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+}
+
+.m-rodape__links a {
+  display: block;
+  padding: 0.25rem 0;
+}
+
+.m-rodape__redes {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+.m-rodape__redes a {
+  display: flex;
+}
+
+.m-rodape__base {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--branco);
+  color: #000;
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.m-rodape__dev {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--fonte-poppins);
+}
+
+.m-rodape__dev img {
+  width: 6rem;
+}
+
+/* Página do cardápio no celular */
+.m-cardapio__chamada {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem 1.25rem 0;
+  font-family: var(--fonte-cabo);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--branco);
+}
+
+.m-cardapio__logo {
+  width: 80%;
+  max-width: 20rem;
+  margin: 1.5rem auto 2rem;
+  pointer-events: none;
+}
+
+.m-cardapio__imagem {
+  width: 100%;
+  pointer-events: none;
+}
+
+.m-cardapio__botao {
+  padding: 2rem 1.25rem;
+  background: var(--branco);
+  text-align: center;
+}
+
+.botao-cardapio--estatico {
+  position: static;
 }
